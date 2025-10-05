@@ -12,6 +12,8 @@ namespace QuizApp
 
             MessageBox.Show("Database initialized successfully!");
         }
+
+
     }
 
 }
