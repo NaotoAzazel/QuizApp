@@ -1,6 +1,7 @@
 ﻿using QuizApp.Services;
 using QuizApp.Services.Repositories;
 using System.Windows;
+using QuizApp.Lib.Validator;
 
 namespace QuizApp
 {
@@ -13,7 +14,18 @@ namespace QuizApp
 
         private void LoginButtonClick(object sender, RoutedEventArgs e)
         {
-            // todo: add fields validating
+            var usernameValidator = textBoxUsername.Rules().MinCharacters(5);
+            var passwordValidator = textBoxPassword.Rules().MinCharacters(8);
+
+            usernameValidator.Validate();
+            passwordValidator.Validate();
+
+            if (!usernameValidator.IsValid || !passwordValidator.IsValid)
+            {
+                MessageBox.Show("Please correct the highlighted fields.");
+                return;
+            }
+
             string username = textBoxUsername.Text;
             string password = textBoxPassword.Password;
 
