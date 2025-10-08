@@ -1,7 +1,9 @@
-﻿using QuizApp.Services;
+﻿using QuizApp.Lib.Validator;
+using QuizApp.Services;
 using QuizApp.Services.Repositories;
+using QuizApp.Views;
 using System.Windows;
-using QuizApp.Lib.Validator;
+using System.Windows.Input;
 
 namespace QuizApp
 {
@@ -10,6 +12,13 @@ namespace QuizApp
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void RegisterWindowOpen(object sender, MouseButtonEventArgs e)
+        {
+            RegisterWindow registrationWindow = new RegisterWindow();
+            registrationWindow.Show();
+            Close();
         }
 
         private void LoginButtonClick(object sender, RoutedEventArgs e)

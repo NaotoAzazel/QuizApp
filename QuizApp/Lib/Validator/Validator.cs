@@ -23,6 +23,16 @@ namespace QuizApp.Lib.Validator
             return this;
         }
 
+        public Validator Required()
+        {
+            if (string.IsNullOrWhiteSpace(_content))
+            {
+                _valid = false;
+                _control.ToolTip = "This field is required";
+            }
+            return this;
+        }
+
         public void Validate()
         {
             if (_valid == false)
