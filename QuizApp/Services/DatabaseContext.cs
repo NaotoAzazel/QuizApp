@@ -9,8 +9,8 @@ namespace QuizApp.Services
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // TODO: add loading the config file
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5555;Username=username;Password=pass;Database=db;");
+            var dbConfig = App.Configuration.GetSection("ConnectionStrings");
+            optionsBuilder.UseNpgsql(dbConfig["db"]);
         }
     }
 }
