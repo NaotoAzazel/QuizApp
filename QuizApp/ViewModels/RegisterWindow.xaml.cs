@@ -15,8 +15,8 @@ namespace QuizApp.Views
 
         private void LoginWindowOpen(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
             Close();
         }
 
@@ -59,8 +59,8 @@ namespace QuizApp.Views
 
             Thread.Sleep(2_000);
 
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
             Close();
         }
     }

@@ -1,15 +1,14 @@
 ﻿using QuizApp.Lib.Validator;
 using QuizApp.Services;
 using QuizApp.Services.Repositories;
-using QuizApp.Views;
 using System.Windows;
 using System.Windows.Input;
 
-namespace QuizApp
+namespace QuizApp.Views
 {
-    public partial class MainWindow : Window
+    public partial class LoginWindow : Window
     {
-        public MainWindow()
+        public LoginWindow()
         {
             InitializeComponent();
         }
