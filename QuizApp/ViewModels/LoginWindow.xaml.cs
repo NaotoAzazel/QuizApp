@@ -44,6 +44,7 @@ namespace QuizApp.Views
             if (validatedUser == null)
             {
                 MessageBox.Show("Username or password incorrect");
+                return;
             }
 
             // TODO: do when login
