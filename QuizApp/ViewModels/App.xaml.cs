@@ -13,16 +13,17 @@ namespace QuizApp
         {
             base.OnStartup(e);
 
+            string environmentName = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
+
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                // TODO: load config file considering the currently environment
-                .AddJsonFile("appsettings.development.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environmentName}.json", optional: false, reloadOnChange: true)
                 .Build();
 
             var dbContext = new DatabaseContext();
             dbContext.Database.EnsureCreated();
 
-            MessageBox.Show("Database initialized successfully!");
+            MessageBox.Show($"Database initialized successfully in {environmentName} environment!");
         }
     }
 }
