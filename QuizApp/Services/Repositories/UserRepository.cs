@@ -26,9 +26,6 @@ public class UserRepository : Repository<User>, IRepository<User>
                    .AsQueryable()
                    .FirstOrDefault(u => u.Username == username);
 
-        if (user == null)
-            throw new KeyNotFoundException($"User with username '{username}' not found");
-
         return user;
     }
 
