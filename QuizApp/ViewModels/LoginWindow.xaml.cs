@@ -47,8 +47,9 @@ namespace QuizApp.Views
                 return;
             }
 
-            // TODO: do when login
-            MessageBox.Show("Logged successfully");
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            Close();
         }
     }
 }
