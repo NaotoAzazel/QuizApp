@@ -1,4 +1,5 @@
-﻿using QuizApp.Lib.Validator;
+﻿using QuizApp.Common.Constants;
+using QuizApp.Lib.Validator;
 using QuizApp.Services;
 using QuizApp.Services.Repositories;
 using System.Windows;
@@ -22,15 +23,15 @@ namespace QuizApp.Views
 
         private void LoginButtonClick(object sender, RoutedEventArgs e)
         {
-            var usernameValidator = textBoxUsername.Rules().MinCharacters(5);
-            var passwordValidator = textBoxPassword.Rules().MinCharacters(8);
+            var usernameValidator = textBoxUsername.Rules().MinCharacters(ValidationRules.MIN_USERNAME_LENGTH);
+            var passwordValidator = textBoxPassword.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
 
             usernameValidator.Validate();
             passwordValidator.Validate();
 
             if (!usernameValidator.IsValid || !passwordValidator.IsValid)
             {
-                MessageBox.Show("Please correct the highlighted fields.");
+                MessageBox.Show(ErrorMessages.CORRECT_HIGHLIGHTED_FIELDS);
                 return;
             }
 
@@ -43,7 +44,7 @@ namespace QuizApp.Views
             var validatedUser = userRepository.validateUser(username, password);
             if (validatedUser == null)
             {
-                MessageBox.Show("Username or password incorrect");
+                MessageBox.Show(ErrorMessages.USERNAME_OR_PASSWORD_INCORRECT);
                 return;
             }
 
