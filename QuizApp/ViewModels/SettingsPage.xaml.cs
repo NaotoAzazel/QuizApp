@@ -25,15 +25,10 @@ namespace QuizApp.Pages
         {
             var user = SessionManager.CurrentUser!;
 
-            var passwordValidator = NewPasswordBox.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
-            var confirmPasswordValidator = ConfirmPasswordBox.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
             var datePickerValidator = BirthDatePicker.Rules().Required();
-
-            passwordValidator.Validate();
-            confirmPasswordValidator.Validate();
             datePickerValidator.Validate();
 
-            if (!passwordValidator.IsValid || !confirmPasswordValidator.IsValid || !datePickerValidator.IsValid)
+            if (!datePickerValidator.IsValid)
             {
                 MessageBox.Show(ErrorMessages.CORRECT_HIGHLIGHTED_FIELDS);
                 return;
@@ -42,21 +37,39 @@ namespace QuizApp.Pages
             string newPassword = NewPasswordBox.Password;
             string confirmPassword = ConfirmPasswordBox.Password;
 
-            if (newPassword != confirmPassword)
+            if (!string.IsNullOrWhiteSpace(newPassword) || !string.IsNullOrWhiteSpace(confirmPassword))
             {
-                MessageBox.Show(ErrorMessages.PASSWORDS_DO_NOT_MATCH);
+                var passwordValidator = NewPasswordBox.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
+                var confirmPasswordValidator = ConfirmPasswordBox.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
+
+                passwordValidator.Validate();
+                confirmPasswordValidator.Validate();
+
+                if (!passwordValidator.IsValid || !confirmPasswordValidator.IsValid)
+                {
+                    MessageBox.Show(ErrorMessages.CORRECT_HIGHLIGHTED_FIELDS);
+                    return;
+                }
+
+                if (newPassword != confirmPassword)
+                {
+                    MessageBox.Show(ErrorMessages.PASSWORDS_DO_NOT_MATCH);
+                    return;
+                }
+
+                user.Password = PasswordHasher.Hash(newPassword);
             }
 
-            DateTime birthDate = BirthDatePicker.DisplayDate;
+            var birthDate = BirthDatePicker.SelectedDate;
 
-            user.Birthday = birthDate.ToUniversalTime();
-            if (!string.IsNullOrWhiteSpace(newPassword))
+            if(birthDate.HasValue)
             {
-                user.Password = PasswordHasher.Hash(newPassword);
+                user.Birthday = birthDate.Value.ToUniversalTime();
             }
 
             var userRepository = new UserRepository(new DatabaseContext());
             userRepository.Update(user);
+            SessionManager.SetCurrentUser(user);
 
             MessageBox.Show(SuccessMessages.CHANGES_SAVED_SUCCESSFULLY);
         }
