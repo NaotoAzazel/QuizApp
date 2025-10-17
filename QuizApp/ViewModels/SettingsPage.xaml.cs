@@ -26,41 +26,29 @@ namespace QuizApp.Pages
             var user = SessionManager.CurrentUser!;
 
             var datePickerValidator = BirthDatePicker.Rules().Required();
-            datePickerValidator.Validate();
+            if(!datePickerValidator.Check()) return;
 
-            if (!datePickerValidator.IsValid)
+            if (!string.IsNullOrWhiteSpace(NewPasswordBox.Password) || !string.IsNullOrWhiteSpace(ConfirmPasswordBox.Password))
             {
-                MessageBox.Show(ErrorMessages.CORRECT_HIGHLIGHTED_FIELDS);
-                return;
-            }
+                var newPasswordValidator = NewPasswordBox.Rules()
+                    .MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH)
+                    .WithErrorBlock(errorNewPassword);
+                var confirmPasswordValidator = ConfirmPasswordBox.Rules()
+                    .MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH)
+                    .WithErrorBlock(errorConfirmNewPassword);
 
-            string newPassword = NewPasswordBox.Password;
-            string confirmPassword = ConfirmPasswordBox.Password;
+                if(!newPasswordValidator.Check() || !confirmPasswordValidator.Check()) return;
 
-            if (!string.IsNullOrWhiteSpace(newPassword) || !string.IsNullOrWhiteSpace(confirmPassword))
-            {
-                var passwordValidator = NewPasswordBox.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
-                var confirmPasswordValidator = ConfirmPasswordBox.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
-
-                passwordValidator.Validate();
-                confirmPasswordValidator.Validate();
-
-                if (!passwordValidator.IsValid || !confirmPasswordValidator.IsValid)
-                {
-                    MessageBox.Show(ErrorMessages.CORRECT_HIGHLIGHTED_FIELDS);
-                    return;
-                }
-
-                if (newPassword != confirmPassword)
+                if (newPasswordValidator.GetValue() != confirmPasswordValidator.GetValue())
                 {
                     MessageBox.Show(ErrorMessages.PASSWORDS_DO_NOT_MATCH);
                     return;
                 }
 
-                user.Password = PasswordHasher.Hash(newPassword);
+                user.Password = PasswordHasher.Hash(newPasswordValidator.GetValue()!);
             }
 
-            var birthDate = BirthDatePicker.SelectedDate;
+            var birthDate = datePickerValidator.GetValue();
 
             if(birthDate.HasValue)
             {

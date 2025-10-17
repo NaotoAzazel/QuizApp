@@ -1,50 +1,77 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace QuizApp.Lib.Validator
 {
-    internal class Validator
+    internal class Validator<T>
     {
         private readonly Control _control;
-        private readonly string _content;
-        private bool _valid = true;
+        private readonly T? _content;
+        private bool _isValid = true;
+        private TextBlock? _errorBlock;
+        private string? _errorMessage;
 
-        public bool IsValid => _valid;
-
-        public Validator(Control control, string content)
+        public Validator(Control control, T? content)
             => (_control, _content) = (control, content);
 
-        public Validator MinCharacters(int count)
+        private void SetInvalid(string message)
         {
-            if (_content.Length < count)
+            _isValid = false;
+            _errorMessage = message;
+        }
+
+        public Validator<T> WithErrorBlock(TextBlock errorBlock)
+        {
+            _errorBlock = errorBlock;
+            return this;
+        }
+
+        public Validator<T> MinCharacters(int count)
+        {
+            if (_content is string s && s.Length < count)
             {
-                _valid = false;
-                _control.ToolTip = $"Minimum {count} characters required";
+                SetInvalid($"Minimum {count} characters required");
             }
             return this;
         }
 
-        public Validator Required()
+        public Validator<T> Required()
         {
-            if (string.IsNullOrWhiteSpace(_content))
+            if (_content == null)
             {
-                _valid = false;
-                _control.ToolTip = "This field is required";
+                SetInvalid("This field is required");
+                return this;
+            }
+
+            if (_content is string s && string.IsNullOrWhiteSpace(s))
+            {
+                SetInvalid("This field is required");
             }
             return this;
         }
 
-        public void Validate()
+        public bool Check()
         {
-            if (_valid == false)
+            if (!_isValid)
             {
-                _control.BorderBrush = System.Windows.Media.Brushes.Red;
-                _control.ToolTip ??= "This field is incorrect";
+                _control.BorderBrush = Brushes.Red;
+                _errorBlock?.SetValue(TextBlock.TextProperty, _errorMessage);
+                _errorBlock?.SetValue(TextBlock.ForegroundProperty, Brushes.Red);
+                _errorBlock?.SetValue(UIElement.VisibilityProperty, Visibility.Visible);
             }
             else
             {
-                _control.BorderBrush = System.Windows.Media.Brushes.Gray;
-                _control.ToolTip = null;
+                _control.BorderBrush = Brushes.Gray;
+                _errorBlock?.SetValue(TextBlock.TextProperty, string.Empty);
+                _errorBlock?.SetValue(UIElement.VisibilityProperty, Visibility.Collapsed);
             }
+
+            return _isValid;
         }
+
+        public static implicit operator bool(Validator<T> validator) => validator.Check();
+
+        public T? GetValue() => _content;
     }
 }

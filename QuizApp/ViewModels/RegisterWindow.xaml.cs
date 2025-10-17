@@ -23,24 +23,20 @@ namespace QuizApp.Views
 
         private void RegisterButtonClick(object sender, RoutedEventArgs e) 
         {
-            var usernameValidator = textBoxUsername.Rules().MinCharacters(ValidationRules.MIN_USERNAME_LENGTH);
-            var passwordValidator = textBoxPassword.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
+            var usernameValidator = textBoxUsername.Rules()
+                .MinCharacters(ValidationRules.MIN_USERNAME_LENGTH)
+                .WithErrorBlock(errorUsername);
+            var passwordValidator = textBoxPassword.Rules()
+                .MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH)
+                .WithErrorBlock(errorPassword);
             var datePickerValidator = birthdayPicker.Rules().Required();
 
-            usernameValidator.Validate();
-            passwordValidator.Validate();
-            datePickerValidator.Validate();
-
-            if (!usernameValidator.IsValid || !passwordValidator.IsValid || !datePickerValidator.IsValid)
-            {
-                MessageBox.Show(ErrorMessages.CORRECT_HIGHLIGHTED_FIELDS);
-                return;
-            }
+            if(!usernameValidator.Check() || !passwordValidator.Check() || !datePickerValidator.Check()) return;
 
             var dbContext = new DatabaseContext();
             var userRepository = new UserRepository(dbContext);
 
-            string username = textBoxUsername.Text;
+            string username = usernameValidator.GetValue()!;
 
             User user = userRepository.GetByUsername(username);
             if(user != null)
@@ -49,10 +45,15 @@ namespace QuizApp.Views
                 return;
             }
 
-            string password = textBoxPassword.Password;
-            DateTime birthday = birthdayPicker.DisplayDate;
+            string password = passwordValidator.GetValue()!;
+            DateTime birthday = datePickerValidator.GetValue()!.Value;
 
-            User newUser = new User{ Username = username, Password = password, Birthday = birthday.ToUniversalTime() };
+            User newUser = new User
+            { 
+                Username = username, 
+                Password = password, 
+                Birthday = birthday.ToUniversalTime() 
+            };
             
             userRepository.Create(newUser);
 

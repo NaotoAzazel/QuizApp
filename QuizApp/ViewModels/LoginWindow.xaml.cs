@@ -23,20 +23,18 @@ namespace QuizApp.Views
 
         private void LoginButtonClick(object sender, RoutedEventArgs e)
         {
-            var usernameValidator = textBoxUsername.Rules().MinCharacters(ValidationRules.MIN_USERNAME_LENGTH);
-            var passwordValidator = textBoxPassword.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
+            var usernameValidator = textBoxUsername.Rules()
+                .MinCharacters(ValidationRules.MIN_USERNAME_LENGTH)
+                .WithErrorBlock(errorUsername);
 
-            usernameValidator.Validate();
-            passwordValidator.Validate();
+            var passwordValidator = textBoxPassword.Rules()
+                .MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH)
+                .WithErrorBlock(errorPassword);
 
-            if (!usernameValidator.IsValid || !passwordValidator.IsValid)
-            {
-                MessageBox.Show(ErrorMessages.CORRECT_HIGHLIGHTED_FIELDS);
-                return;
-            }
+            if (!usernameValidator.Check() || !passwordValidator.Check()) return;
 
-            string username = textBoxUsername.Text;
-            string password = textBoxPassword.Password;
+            string username = usernameValidator.GetValue()!;
+            string password = passwordValidator.GetValue()!;
 
             var dbContext = new DatabaseContext();
             var userRepository = new UserRepository(dbContext);
