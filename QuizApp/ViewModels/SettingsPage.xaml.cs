@@ -1,4 +1,5 @@
-﻿using QuizApp.Lib.Validator;
+﻿using QuizApp.Common.Constants;
+using QuizApp.Lib.Validator;
 using QuizApp.Services;
 using QuizApp.Services.Repositories;
 using System.Windows;
@@ -24,8 +25,8 @@ namespace QuizApp.Pages
         {
             var user = SessionManager.CurrentUser!;
 
-            var passwordValidator = NewPasswordBox.Rules().MinCharacters(8);
-            var confirmPasswordValidator = ConfirmPasswordBox.Rules().MinCharacters(8);
+            var passwordValidator = NewPasswordBox.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
+            var confirmPasswordValidator = ConfirmPasswordBox.Rules().MinCharacters(ValidationRules.MIN_PASSWORD_LENGTH);
             var datePickerValidator = BirthDatePicker.Rules().Required();
 
             passwordValidator.Validate();
@@ -34,7 +35,7 @@ namespace QuizApp.Pages
 
             if (!passwordValidator.IsValid || !confirmPasswordValidator.IsValid || !datePickerValidator.IsValid)
             {
-                MessageBox.Show("Please correct the highlighted fields.");
+                MessageBox.Show(ErrorMessages.CORRECT_HIGHLIGHTED_FIELDS);
                 return;
             }
 
@@ -43,7 +44,7 @@ namespace QuizApp.Pages
 
             if (newPassword != confirmPassword)
             {
-                MessageBox.Show("Passwords do not match");
+                MessageBox.Show(ErrorMessages.PASSWORDS_DO_NOT_MATCH);
             }
 
             DateTime birthDate = BirthDatePicker.DisplayDate;
@@ -57,7 +58,7 @@ namespace QuizApp.Pages
             var userRepository = new UserRepository(new DatabaseContext());
             userRepository.Update(user);
 
-            MessageBox.Show("Changes successfully saved");
+            MessageBox.Show(SuccessMessages.CHANGES_SAVED_SUCCESSFULLY);
         }
     }
 }
