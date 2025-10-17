@@ -47,6 +47,8 @@ namespace QuizApp.Views
                 return;
             }
 
+            SessionManager.SetCurrentUser(validatedUser);
+
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             Close();
