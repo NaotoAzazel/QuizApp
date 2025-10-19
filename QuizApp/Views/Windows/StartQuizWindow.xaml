@@ -1,0 +1,53 @@
+﻿<Window
+    x:Class="QuizApp.Views.Windows.StartQuizWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:QuizApp.Views.Windows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="StartQuizWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Margin="0,0,0,10"
+            FontSize="16"
+            Text="Select a category:" />
+
+        <ComboBox
+            x:Name="CategoryComboBox"
+            Grid.Row="1"
+            Height="30"
+            DisplayMemberPath="Name"
+            FontSize="14"
+            SelectedIndex="1" />
+
+        <TextBlock
+            x:Name="EmptyMessageTextBlock"
+            Grid.Row="2"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Center"
+            FontSize="14"
+            FontStyle="Italic"
+            Foreground="Gray"
+            Text="Категории викторин не найдены."
+            Visibility="Collapsed" />
+
+        <Button
+            Grid.Row="2"
+            Width="180"
+            Height="35"
+            Margin="0,20,0,0"
+            HorizontalAlignment="Left"
+            Click="StartQuiz_Click"
+            Content="Start quiz"
+            FontSize="14" />
+    </Grid>
+</Window>

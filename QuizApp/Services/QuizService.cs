@@ -25,16 +25,16 @@ namespace QuizApp.Services
 
             foreach (var question in quizSession.Questions)
             {
-                var userAnswer = quizSession.Answers.FirstOrDefault(a => a.QuestionId == question.Id);
+                UserAnswer userAnswer = quizSession.Answers.FirstOrDefault(a => a.QuestionId == question.Id);
                 if (userAnswer == null) continue;
 
-                var correctIds = question.Options
+                List<int> correctIds = question.Options
                     .Where(a => a.IsCorrect)
                     .Select(a => a.Id)
                     .OrderBy(id => id)
                     .ToList();
 
-                var selectedIds = userAnswer.SelectedAnswerIds
+                List<int> selectedIds = userAnswer.SelectedAnswerIds
                     .OrderBy(id => id)
                     .ToList();
 
