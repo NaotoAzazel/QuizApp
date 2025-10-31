@@ -1,4 +1,5 @@
-﻿using QuizApp.Models;
+﻿using QuizApp.Common.Constants;
+using QuizApp.Models;
 using QuizApp.Services.Repositories;
 
 namespace QuizApp.Services
@@ -16,7 +17,9 @@ namespace QuizApp.Services
 
         public List<Question> GetQuestions(Category? category, int questionsCount)
         {
-            return _quizRepo.GetRandomQuestions(category, questionsCount);
+            return category.Id == QuizSettings.MIXED_CATEGORY_ID 
+                ? _quizRepo.GetRandomQuestions(questionsCount) 
+                : _quizRepo.GetRandomQuestionsByCategory(category, questionsCount);
         }
 
         public int EvaluateQuiz(int userId, Category category, QuizSession quizSession)
@@ -47,7 +50,7 @@ namespace QuizApp.Services
             UserQuizResult result = new UserQuizResult
             {
                 UserId = userId,
-                CategoryId = category.Id,
+                CategoryId = category.Id == QuizSettings.MIXED_CATEGORY_ID ? null : category.Id,
                 CorrectAnswers = correctAnswers,
             };
 

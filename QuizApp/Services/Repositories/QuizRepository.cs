@@ -29,7 +29,7 @@ namespace QuizApp.Services.Repositories
                 .ToList();
         }
 
-        public List<Question> GetRandomQuestions(Category? category = null, int count = 20)
+        public List<Question> GetRandomQuestionsByCategory(Category? category = null, int count = 20)
         {
             var query = _context.Questions
                 .Include(q => q.Options)
@@ -42,6 +42,14 @@ namespace QuizApp.Services.Repositories
             }
 
             return query
+                .OrderBy(q => Guid.NewGuid())
+                .Take(count)
+                .ToList();
+        }
+
+        public List<Question> GetRandomQuestions(int count)
+        {
+            return _context.Questions
                 .OrderBy(q => Guid.NewGuid())
                 .Take(count)
                 .ToList();

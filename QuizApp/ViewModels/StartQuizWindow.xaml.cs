@@ -21,6 +21,11 @@ namespace QuizApp.Views.Windows
         {
             QuizCategoryRepository quizCategoryRepository = new QuizCategoryRepository(new DatabaseContext());
             List<Category> categories = quizCategoryRepository.GetAll().ToList();
+            categories.Insert(0, new Category
+            {
+                Id = QuizSettings.MIXED_CATEGORY_ID,
+                Name = QuizSettings.MIXED_CATEGORY_NAME
+            });
 
             if (categories.Any())
             {

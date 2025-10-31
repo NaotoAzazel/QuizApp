@@ -13,7 +13,7 @@ namespace QuizApp.Models
         public User? User { get; set; }
 
         [ForeignKey(nameof(Category))]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public Category? Category { get; set; }
 
         public int CorrectAnswers { get; set; }
