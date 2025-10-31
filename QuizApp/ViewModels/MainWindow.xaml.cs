@@ -30,6 +30,7 @@ namespace QuizApp.Views
 
         private void HistoryButton_Click(object sender, RoutedEventArgs e)
         {
+            MainFrame.Navigate(new HistoryPage());
         }
 
         private void Top20Button_Click(object sender, RoutedEventArgs e)
