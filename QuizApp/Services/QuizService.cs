@@ -1,6 +1,8 @@
-﻿using QuizApp.Common.Constants;
+﻿using Microsoft.EntityFrameworkCore;
+using QuizApp.Common.Constants;
 using QuizApp.Models;
 using QuizApp.Services.Repositories;
+using System.Net.NetworkInformation;
 
 namespace QuizApp.Services
 {
@@ -60,8 +62,29 @@ namespace QuizApp.Services
 
         public List<UserQuizResult> GetLeaderboard(Category? category)
         {
-            // TODO: implement
-            return [];
+            using var context = new DatabaseContext();
+
+            var query = context.UserQuizResult
+                .Include(r => r.User)
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (category != null && category.Id != QuizSettings.MIXED_CATEGORY_ID)
+            {
+                query = query.Where(r => r.CategoryId == category.Id);
+            }
+
+            List<UserQuizResult> results = query.ToList();
+
+            return results
+                .GroupBy(r => r.UserId)
+                .Select(g => g
+                    .OrderByDescending(r => r.CorrectAnswers)
+                    .ThenBy(r => r.Id)
+                    .First())
+                .OrderByDescending(r => r.CorrectAnswers)
+                .Take(20)
+                .ToList();
         }
     }
 }

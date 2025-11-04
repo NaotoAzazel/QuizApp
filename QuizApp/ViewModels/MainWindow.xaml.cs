@@ -35,6 +35,7 @@ namespace QuizApp.Views
 
         private void Top20Button_Click(object sender, RoutedEventArgs e)
         {
+            MainFrame.Navigate(new LeaderboardPage());
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
