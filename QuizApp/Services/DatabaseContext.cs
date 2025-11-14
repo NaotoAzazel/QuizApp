@@ -6,6 +6,10 @@ namespace QuizApp.Services
     public class DatabaseContext : DbContext
     {
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<Question> Questions { get; set; } = null!;
+        public DbSet<AnswerOption> AnswerOptions { get; set; } = null!;
+        public DbSet<UserQuizResult> UserQuizResult { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

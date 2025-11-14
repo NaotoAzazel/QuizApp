@@ -1,0 +1,101 @@
+﻿<Page
+    x:Class="QuizApp.Pages.HistoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:QuizApp.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="HistoryPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="White"
+    mc:Ignorable="d">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Margin="0,0,0,20"
+            FontSize="28"
+            FontWeight="Bold"
+            Foreground="#333"
+            Text="Your last 20 quizzes" />
+
+        <Grid Grid.Row="1">
+            <TextBlock
+                x:Name="EmptyHistoryText"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="16"
+                Foreground="Gray"
+                Text="You haven’t completed any quizzes yet."
+                Visibility="Collapsed" />
+
+            <Border
+                Grid.Row="1"
+                Padding="10"
+                BorderBrush="#DDD"
+                BorderThickness="1"
+                CornerRadius="10">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="QuizHistoryList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Margin="0,0,0,10"
+                                    Padding="10"
+                                    Background="White"
+                                    BorderBrush="#EEE"
+                                    BorderThickness="1"
+                                    CornerRadius="8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="#222"
+                                            Text="{Binding CategoryName}" />
+
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            Foreground="#555"
+                                            Text="{Binding CorrectAnswers, StringFormat='Correct: {0}'}" />
+
+                                        <TextBlock
+                                            Grid.Column="2"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            Foreground="#555"
+                                            Text="{Binding TotalQuestions, StringFormat='Total: {0}'}" />
+
+                                        <TextBlock
+                                            Grid.Column="3"
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="13"
+                                            Foreground="#777"
+                                            Text="{Binding CompletedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,26 @@
+﻿<Window
+    x:Class="QuizApp.Views.Windows.QuizWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Quiz"
+    Width="800"
+    Height="500">
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock
+                x:Name="QuestionTextBlock"
+                Margin="0,0,0,20"
+                FontSize="20"
+                Text="Question text..."
+                TextWrapping="Wrap" />
+
+            <StackPanel x:Name="AnswersPanel" Margin="0,0,0,20" />
+
+            <Button
+                Width="150"
+                HorizontalAlignment="Right"
+                Click="NextButton_Click"
+                Content="Next question" />
+        </StackPanel>
+    </Grid>
+</Window>
