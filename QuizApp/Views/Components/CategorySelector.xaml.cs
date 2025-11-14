@@ -8,6 +8,7 @@ namespace QuizApp.Views.Components
 {
     public partial class CategorySelector : UserControl
     {
+        public bool IncludeMixedCategory { get; set; } = true;
         public event Action<Category?>? CategorySelected;
 
         public CategorySelector()
@@ -19,15 +20,18 @@ namespace QuizApp.Views.Components
         private void LoadCategories()
         {
             QuizCategoryRepository quizCategoryRepository = new QuizCategoryRepository(new DatabaseContext());
-            List<Category> categories = quizCategoryRepository.GetAll().ToList();
+            List<Category> categories = quizCategoryRepository.GetAll().Where(c => !c.IsDeleted).ToList();
 
             if (categories.Any())
             {
-                categories.Insert(0, new Category
+                if (IncludeMixedCategory)
                 {
-                    Id = QuizSettings.MIXED_CATEGORY_ID,
-                    Name = QuizSettings.MIXED_CATEGORY_NAME
-                });
+                    categories.Insert(0, new Category
+                    {
+                        Id = QuizSettings.MIXED_CATEGORY_ID,
+                        Name = QuizSettings.MIXED_CATEGORY_NAME
+                    });
+                }
 
                 CategoryComboBox.ItemsSource = categories;
                 CategoryComboBox.SelectedIndex = 0;

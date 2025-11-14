@@ -36,6 +36,12 @@
                 Margin="5"
                 Click="SettingsButton_Click"
                 Content="Settings" />
+            <Button
+                x:Name="AdminButton"
+                Margin="5"
+                Click="AdminButton_Click"
+                Content="Admin panel"
+                Visibility="Collapsed" />
         </StackPanel>
 
         <Frame
