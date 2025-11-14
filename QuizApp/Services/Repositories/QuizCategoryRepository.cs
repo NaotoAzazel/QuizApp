@@ -11,6 +11,17 @@ namespace QuizApp.Services.Repositories
             _context = context;
         }
 
+        public Category? GetByName(string name)
+        {
+            return _context.Categories.FirstOrDefault(c => c.Name == name);
+        }
+
+        public void SoftDelete(Category category)
+        {
+            category.IsDeleted = true;
+            Update(category);
+        }
+
         public void Delete(int id)
         {
             var category = Get(id);
