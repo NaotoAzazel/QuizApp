@@ -2,6 +2,7 @@
 using QuizApp.Services.Repositories;
 using System.Windows.Controls;
 using System.Windows;
+using QuizApp.Lib.Extensions;
 
 namespace QuizApp.Pages
 {
@@ -19,13 +20,14 @@ namespace QuizApp.Pages
             DatabaseContext databaseContext = new DatabaseContext(); 
             UserQuizResultRepository userQuizResultRepository = new UserQuizResultRepository(databaseContext);
 
+
             var results = userQuizResultRepository.GetAllWithCategory()
                 .Where(r => r.UserId == SessionManager.CurrentUser!.Id)
                 .OrderByDescending(r => r.CompletedAt)
                 .Take(20)
                 .Select(r => new
                 {
-                    CategoryName = r.Category != null ? r.Category.Name : "Mixed",
+                    CategoryName = r.Category.ToDisplayName(),
                     CorrectAnswers = r.CorrectAnswers,
                     TotalQuestions = databaseContext.Questions
                         .Count(q => q.CategoryId == r.CategoryId),

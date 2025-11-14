@@ -20,7 +20,7 @@ namespace QuizApp.Views.Components
         private void LoadCategories()
         {
             QuizCategoryRepository quizCategoryRepository = new QuizCategoryRepository(new DatabaseContext());
-            List<Category> categories = quizCategoryRepository.GetAll().ToList();
+            List<Category> categories = quizCategoryRepository.GetAll().Where(c => !c.IsDeleted).ToList();
 
             if (categories.Any())
             {
