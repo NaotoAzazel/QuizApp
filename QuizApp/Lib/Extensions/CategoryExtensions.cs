@@ -10,7 +10,7 @@ namespace QuizApp.Lib.Extensions
                 return "Mixed";
 
             if (category.IsDeleted)
-                return $"(Deleted)";
+                return $"(Deleted {category.Name})";
 
             return category.Name;
         }
