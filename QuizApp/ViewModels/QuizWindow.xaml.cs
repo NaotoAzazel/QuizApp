@@ -103,7 +103,7 @@ namespace QuizApp.Views.Windows
             };
 
             int correctAnswers = _quizService.EvaluateQuiz(SessionManager.CurrentUser!.Id, _category, quizSession);
-            MessageBox.Show($"{SuccessMessages.QUIZ_SUCCESSFULLY_ENDED} {correctAnswers} з {_questions.Count}");
+            MessageBox.Show($"{SuccessMessages.QUIZ_SUCCESSFULLY_ENDED} {correctAnswers} of {_questions.Count}");
 
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
