@@ -22,8 +22,6 @@ namespace QuizApp
 
             var dbContext = new DatabaseContext();
             dbContext.Database.EnsureCreated();
-
-            MessageBox.Show($"Database initialized successfully in {environmentName} environment!");
         }
     }
 }
